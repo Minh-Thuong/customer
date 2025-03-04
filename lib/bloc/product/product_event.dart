@@ -20,3 +20,15 @@ class GetProductsByCategoryEvent extends ProductEvent {
   // TODO: implement props
   List<Object> get props => [categoryId, page, limit];
 }
+
+class SearchProductsEvent extends ProductEvent {
+  final String query;
+  final int page;
+  final int limit;
+
+  const SearchProductsEvent(this.query, this.page, this.limit);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [query, page, limit];
+}

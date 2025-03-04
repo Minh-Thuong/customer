@@ -1,12 +1,31 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer/bloc/product/product_bloc.dart';
 import 'package:customer/model/product.dart';
+import 'package:customer/widgets/buildproductgrid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SearchScreen extends StatelessWidget {
+class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
+
+  @override
+  State<StatefulWidget> createState() {
+    return _SearchScreenState();
+  }
+}
+
+class _SearchScreenState extends State<SearchScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  String currentQuery = "";
+  int page = 0;
+  int limit = 10;
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +39,13 @@ class SearchScreen extends StatelessWidget {
             children: [
               Expanded(
                 child: TextField(
-                  onSubmitted: (value) {},
+                  controller: _searchController,
+                  onSubmitted: (query) {
+                    setState(() {
+                      currentQuery = query;
+                    });
+                    context.read<ProductBloc>().add(SearchProductsEvent(query, page, limit));
+                  },
                   decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(8),
                       prefixIcon:
@@ -65,7 +90,20 @@ class SearchScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    _buildProductGrid(context, state.products),
+                    buildProductGrid(context, state.products),
+                  ],
+                ),
+              ),
+            );
+          } else if (state is SearchProductLoaded) {
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<ProductBloc>().add(GetProductsEvent());
+              },
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    buildProductGrid(context, state.products),
                   ],
                 ),
               ),
@@ -77,78 +115,5 @@ class SearchScreen extends StatelessWidget {
     );
   }
 
-  // Widget hiển thị lưới sản phẩm
-  Widget _buildProductGrid(BuildContext context, List<Product> products) {
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        mainAxisSpacing: 8.0,
-        crossAxisSpacing: 8.0,
-        childAspectRatio: 0.7,
-      ),
-      itemCount: products.length,
-      itemBuilder: (context, index) {
-        final product = products[index];
-        String optimizedUrl = "${product.profileImage}?w=150&h=150&c=fill";
-        return InkWell(
-          onTap: () {
-            // Điều hướng tới màn hình chi tiết sản phẩm
-            // Navigator.pushNamed(context, '/productDetail', arguments: product);
-          },
-          child: Card(
-            elevation: 8,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-              side: const BorderSide(color: Color.fromARGB(255, 152, 187, 134)),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: CachedNetworkImage(
-                      imageUrl: optimizedUrl,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: double.infinity,
-                      placeholder: (context, url) => Image.asset(
-                        'assets/placeholder.jpg',
-                        fit: BoxFit.cover,
-                      ),
-                      errorWidget: (context, url, error) => const Icon(
-                        Icons.error,
-                        size: 70,
-                        color: Color.fromARGB(255, 207, 204, 204),
-                      ),
-                      fadeInDuration: const Duration(milliseconds: 200),
-                      fadeOutDuration: const Duration(milliseconds: 200),
-                    ),
-                  ),
-                  SizedBox(height: 8.h),
-                  Text(
-                    product.name!,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  SizedBox(height: 2.h),
-                  Text(
-                    "${product.price} đ",
-                    style: const TextStyle(color: Colors.orange, fontSize: 13),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
+  
 }

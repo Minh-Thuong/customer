@@ -13,6 +13,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
   ProductBloc(this._productRepository) : super(ProductInitial()) {
     on<GetProductsEvent>(_onLoadProducts);
     on<GetProductsByCategoryEvent>(_onLoadProductsByCategory);
+    on<SearchProductsEvent>(_searchProducts);
   }
 
   Future<void> _onLoadProducts(
@@ -33,6 +34,18 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
       final products = await _productRepository.getProductsByCategory(
           event.categoryId, event.page, event.limit);
       emit(ProductByCategoryLoaded(products));
+    } catch (e) {
+      emit(ProductFailure(message: e.toString()));
+    }
+  }
+
+  Future<void> _searchProducts(
+      SearchProductsEvent event, Emitter<ProductState> emit) async {
+    emit(ProductLoading());
+    try {
+      final products = await _productRepository.searchProducts(
+          event.query, event.page, event.limit);
+      emit(SearchProductLoaded(products));
     } catch (e) {
       emit(ProductFailure(message: e.toString()));
     }

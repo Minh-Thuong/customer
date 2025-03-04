@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 abstract class ProductDatasource {
   Future<List<Product>> getProducts();
   Future<List<Product>> getProductsByCategory(String id, int page, int limit);
+  Future<List<Product>> searchProducts(String query, int page, int limit);
 }
 
 class ProductRemote implements ProductDatasource {
@@ -49,6 +50,29 @@ class ProductRemote implements ProductDatasource {
         return results.map((product) => Product.fromJson(product)).toList();
       }
 
+      throw Exception("Không tìm thấy sản phẩm");
+    } on DioException catch (e) {
+      throw Exception(e.response?.data['message'] ?? "Lỗi kết nối API");
+    } catch (e) {
+      throw Exception("Lỗi không xác định: ${e.toString()}");
+    }
+  }
+
+  @override
+  Future<List<Product>> searchProducts(String query, int page, int limit) async {
+    try {
+     // Gửi yêu cầu GET
+      final response = await _dio.get(
+        '/api/products/search?name=$query&page=$page&size=$limit',
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      if (response.statusCode == 200) {
+        final List<dynamic> results = response.data['result']['content'];
+        print("Results API: $results");
+        return results.map((product) => Product.fromJson(product)).toList();
+      }
+      
       throw Exception("Không tìm thấy sản phẩm");
     } on DioException catch (e) {
       throw Exception(e.response?.data['message'] ?? "Lỗi kết nối API");
