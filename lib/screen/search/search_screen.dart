@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer/bloc/product/product_bloc.dart';
 import 'package:customer/model/product.dart';
+import 'package:customer/screen/cart/cart_screen.dart';
 import 'package:customer/widgets/buildproductgrid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,7 +45,9 @@ class _SearchScreenState extends State<SearchScreen> {
                     setState(() {
                       currentQuery = query;
                     });
-                    context.read<ProductBloc>().add(SearchProductsEvent(query, page, limit));
+                    context
+                        .read<ProductBloc>()
+                        .add(SearchProductsEvent(query, page, limit));
                   },
                   decoration: InputDecoration(
                       contentPadding: const EdgeInsets.all(8),
@@ -62,7 +65,13 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Navigator.push(context, MaterialPageRoute(
+                  //   builder: (context) {
+                  //     return CartScreen();
+                  //   },
+                  // ));
+                },
                 icon: const Icon(
                   Icons.shopping_cart,
                   color: Colors.white,
@@ -81,7 +90,9 @@ class _SearchScreenState extends State<SearchScreen> {
           if (state is ProductFailure) {
             return Center(child: Text(state.message));
           }
-
+          if (state is SearchProductEmpty) {
+            return Center(child: Text("Không tìm thấy sản phẩm"));
+          }
           if (state is ProductLoaded) {
             return RefreshIndicator(
               onRefresh: () async {
@@ -114,6 +125,4 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     );
   }
-
-  
 }

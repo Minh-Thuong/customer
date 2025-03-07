@@ -29,3 +29,4 @@ final class CategoryError extends CategoryState {
   // TODO: implement props
   List<Object> get props => [message];
 }
+

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer/bloc/product/product_bloc.dart';
 import 'package:customer/model/product.dart';
 import 'package:customer/screen/search/search_screen.dart';
+import 'package:customer/widgets/buildproductgrid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -41,7 +42,7 @@ class ProductByCategoryScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    _buildProductGrid(context, state.products),
+                    buildProductGrid(context, state.products),
                   ],
                 ),
               ),

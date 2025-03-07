@@ -42,3 +42,14 @@ final class SearchProductLoaded extends ProductState {
   // TODO: implement props
   List<Object> get props => [products];
 }
+
+final class SearchProductEmpty extends ProductState {}
+
+final class ProductDetailLoaded extends ProductState {
+  final Product product;
+  const ProductDetailLoaded(this.product);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [product];
+}

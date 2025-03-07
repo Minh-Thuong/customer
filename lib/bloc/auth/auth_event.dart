@@ -37,3 +37,10 @@ class AuthSignupRequest extends AuthEvent {
   List<Object> get props => [name, email, phone, address, password];
 }
 
+class CheckLoginEvent extends AuthEvent {}
+
+class LogoutEvent extends AuthEvent {}
+
+class AppStarted extends AuthEvent {} 
+
+class GetUserEvent extends AuthEvent {}

@@ -5,6 +5,7 @@ abstract class ProductDatasource {
   Future<List<Product>> getProducts();
   Future<List<Product>> getProductsByCategory(String id, int page, int limit);
   Future<List<Product>> searchProducts(String query, int page, int limit);
+  Future<Product> getProductById(String id);
 }
 
 class ProductRemote implements ProductDatasource {
@@ -59,9 +60,10 @@ class ProductRemote implements ProductDatasource {
   }
 
   @override
-  Future<List<Product>> searchProducts(String query, int page, int limit) async {
+  Future<List<Product>> searchProducts(
+      String query, int page, int limit) async {
     try {
-     // Gửi yêu cầu GET
+      // Gửi yêu cầu GET
       final response = await _dio.get(
         '/api/products/search?name=$query&page=$page&size=$limit',
         options: Options(headers: {'Content-Type': 'application/json'}),
@@ -72,7 +74,29 @@ class ProductRemote implements ProductDatasource {
         print("Results API: $results");
         return results.map((product) => Product.fromJson(product)).toList();
       }
-      
+
+      throw Exception("Không tìm thấy sản phẩm");
+    } on DioException catch (e) {
+      throw Exception(e.response?.data['message'] ?? "Lỗi kết nối API");
+    } catch (e) {
+      throw Exception("Lỗi không xác định: ${e.toString()}");
+    }
+  }
+
+  @override
+  Future<Product> getProductById(String id) async {
+    try {
+      final response = await _dio.get(
+        '/api/products/$id', // Sửa cú pháp URL
+        options: Options(headers: {'Content-Type': 'application/json'}),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> result = response.data['result'];
+        print("Results API product detail: $result");
+        return Product.fromJson(result); // Ánh xạ trực tiếp từ đối tượng JSON
+      }
+
       throw Exception("Không tìm thấy sản phẩm");
     } on DioException catch (e) {
       throw Exception(e.response?.data['message'] ?? "Lỗi kết nối API");

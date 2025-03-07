@@ -121,11 +121,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (state is AuthSuccess) {
                     state.token;
                     await TokenManager.saveToken(state.token);
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (_) => const Homescreen(),
-                      ),
-                    );
+                    // Navigator.of(context).pushReplacement(
+                    //   MaterialPageRoute(
+                    //     builder: (_) => const Homescreen(),
+                    //   ),
+                    // );
+                    Navigator.pop(context);
                   }
                 },
               ),

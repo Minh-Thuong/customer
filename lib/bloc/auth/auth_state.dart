@@ -38,3 +38,23 @@ class AuthSignUp extends AuthState {
   // TODO: implement props
   List<Object> get props => [result];
 }
+
+class AuthAuthenticated extends AuthState {
+  final String userId; // Giả sử có thông tin userId
+  AuthAuthenticated({required this.userId});
+}
+class AuthUnauthenticated extends AuthState {}
+class AuthError extends AuthState {
+  final String message;
+  AuthError({required this.message});
+}
+
+class GetUser extends AuthState {
+  final User user;
+
+  GetUser(this.user);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [user];
+}

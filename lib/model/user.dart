@@ -1,23 +1,23 @@
+// class User {
+//   Result? result;
+
+//   User({this.result});
+
+//   User.fromJson(Map<String, dynamic> json) {
+//     result =
+//         json['result'] != null ? new Result.fromJson(json['result']) : null;
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = new Map<String, dynamic>();
+//     if (this.result != null) {
+//       data['result'] = this.result!.toJson();
+//     }
+//     return data;
+//   }
+// }
+
 class User {
-  Result? result;
-
-  User({this.result});
-
-  User.fromJson(Map<String, dynamic> json) {
-    result =
-        json['result'] != null ? new Result.fromJson(json['result']) : null;
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.result != null) {
-      data['result'] = this.result!.toJson();
-    }
-    return data;
-  }
-}
-
-class Result {
   String? id;
   String? name;
   String? email;
@@ -28,7 +28,7 @@ class Result {
   Null? cloudinaryImageId;
   List<Roles>? roles;
 
-  Result(
+  User(
       {this.id,
       this.name,
       this.email,
@@ -39,7 +39,7 @@ class Result {
       this.cloudinaryImageId,
       this.roles});
 
-  Result.fromJson(Map<String, dynamic> json) {
+  User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     email = json['email'];
