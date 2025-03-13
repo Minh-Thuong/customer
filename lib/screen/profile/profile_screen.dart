@@ -1,4 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:customer/screen/login/login.dart';
+import 'package:customer/screen/order/list_order_cancel.dart';
+import 'package:customer/screen/order/list_order_confirmed.dart';
+import 'package:customer/screen/order/list_order_delivered.dart';
+import 'package:customer/screen/order/list_order_pending.dart';
 import 'package:customer/screen/profile/infor_person_screen.dart';
 import 'package:customer/screen/search/search_screen.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +66,12 @@ class ProfileScreen extends StatelessWidget {
         children: [
           _buildProfileInfo(context),
           _buildListInfor(context, "Thông tin cá nhân", InforPersonScreen()),
-          // _buildListInfor(context, "Đăng xuất"),
+          _buildListInfor(context, "Đơn hàng chờ xử lý", ListOrderPending()),
+          _buildListInfor(
+              context, "Đơn hàng đã được xác nhận", ListOrderConfirmed()),
+          _buildListInfor(context, "Lịch sử mua hàng", ListOrderDelivered()),
+          _buildListInfor(context, "Đơn hàng đã hủy", ListOrderCancel()),
+          _buildListInfor(context, "Đăng xuất", LoginScreen()),
         ],
       ),
     );

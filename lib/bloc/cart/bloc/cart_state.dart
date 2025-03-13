@@ -1,4 +1,6 @@
-part of 'cart_bloc.dart';
+import 'package:equatable/equatable.dart';
+import 'package:customer/model/order.dart';
+import 'package:customer/model/order_detail.dart';
 
 sealed class CartState extends Equatable {
   const CartState();
@@ -11,7 +13,6 @@ final class CartInitial extends CartState {}
 
 final class AddToCartLoading extends CartState {}
 
-// Trạng thái thành công khi thêm sản phẩm vào giỏ hàng
 class AddCartSuccess extends CartState {
   final Order order;
 
@@ -21,7 +22,6 @@ class AddCartSuccess extends CartState {
   List<Object> get props => [order];
 }
 
-// Trạng thái thất bại khi thêm vào giỏ hàng
 class CartFailure extends CartState {
   final String error;
 
@@ -33,21 +33,69 @@ class CartFailure extends CartState {
 
 class CartLoading extends CartState {}
 
-final class CartLoaded extends CartState {
-  final List<CartItem> cartItems;
-  final String orderId; // Thêm orderId
+class CartLoaded extends CartState {
+  final Order order;
 
-  const CartLoaded({required this.cartItems, required this.orderId});
+  const CartLoaded({required this.order});
 
   @override
-  List<Object> get props => [cartItems, orderId];
+  // TODO: implement props
+  List<Object> get props => [order];
 }
 
-final class UpdateQuantityProductSuccess extends CartState {
-  final OrderDetails cartItems;
+class UpdateOrderStatusLoading extends CartState {}
 
-  const UpdateQuantityProductSuccess({required this.cartItems});
+class PlaceOrderLoading extends CartState {}
+
+class PlaceOrderSuccess extends CartState {
+  final Order order;
+
+  const PlaceOrderSuccess({required this.order});
 
   @override
-  List<Object> get props => [cartItems];
+  List<Object> get props => [order];
+}
+
+// Trong cart_state.dart
+class CartTokenInvalid extends CartState {}
+
+class UpdateOrderStatusSuccess extends CartState {
+  final Order order;
+
+  const UpdateOrderStatusSuccess({required this.order});
+
+  @override
+  List<Object> get props => [order];
+}
+
+class OrderLoading extends CartState {}
+
+class OrderFailure extends CartState {
+  final String error;
+
+  const OrderFailure({required this.error});
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [error];
+}
+
+class OrderByStatusLoaded extends CartState {
+  final List<Order> orders;
+
+  const OrderByStatusLoaded({required this.orders});
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [orders];
+}
+
+class OrderLoaded extends CartState {
+  final Order order;
+
+  const OrderLoaded({required this.order});
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [order];
 }

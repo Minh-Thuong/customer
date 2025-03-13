@@ -1,25 +1,31 @@
+import 'package:customer/model/product.dart';
 
 class OrderDetails {
   String? id;
-  String? order;
-  String? product;
+  String? orderId; // Sửa tên trường
   int? quantity;
+  double? total;
+  Product? product;
 
-  OrderDetails({this.id, this.order, this.product, this.quantity});
+  OrderDetails({this.id, this.orderId, this.quantity, this.total, this.product});
 
   OrderDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    order = json['orderId'];
-    product = json['productId'];
+    orderId = json['orderId'];
     quantity = json['quantity'];
+    total = json['total']?.toDouble();
+    product = json['product'] != null ? Product.fromJson(json['product']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['orderId'] = this.order;
-    data['productId'] = this.product;
-    data['quantity'] = this.quantity;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['orderId'] = orderId;
+    data['quantity'] = quantity;
+    data['total'] = total;
+    if (product != null) {
+      data['product'] = product!.toJson();
+    }
     return data;
   }
 }
