@@ -66,11 +66,11 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
               IconButton(
                 onPressed: () {
-                  // Navigator.push(context, MaterialPageRoute(
-                  //   builder: (context) {
-                  //     return CartScreen();
-                  //   },
-                  // ));
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return CartScreen();
+                    },
+                  ));
                 },
                 icon: const Icon(
                   Icons.shopping_cart,
@@ -101,7 +101,9 @@ class _SearchScreenState extends State<SearchScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    buildProductGrid(context, state.products),
+                    buildProductGrid(context, state.products, () {
+                      context.read<ProductBloc>().add(GetProductsEvent());
+                    }),
                   ],
                 ),
               ),
@@ -114,7 +116,11 @@ class _SearchScreenState extends State<SearchScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    buildProductGrid(context, state.products),
+                    buildProductGrid(context, state.products, () {
+                      context
+                          .read<ProductBloc>()
+                          .add(SearchProductsEvent(currentQuery, page, limit));
+                    }),
                   ],
                 ),
               ),

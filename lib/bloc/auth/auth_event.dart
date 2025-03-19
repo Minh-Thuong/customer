@@ -39,8 +39,30 @@ class AuthSignupRequest extends AuthEvent {
 
 class CheckLoginEvent extends AuthEvent {}
 
-class LogoutEvent extends AuthEvent {}
+class LogoutEvent extends AuthEvent {
+  final String token;
+  const LogoutEvent({required this.token});
 
-class AppStarted extends AuthEvent {} 
+  @override
+  // TODO: implement props
+  List<Object> get props => [token];
+}
+
+class AppStarted extends AuthEvent {}
 
 class GetUserEvent extends AuthEvent {}
+
+class AuthGoogleRequest extends AuthEvent {
+ 
+}
+
+class UpdateUserEvent extends AuthEvent {
+  final String id;
+  final UserUpdate userUpdate;
+
+  const UpdateUserEvent({required this.id, required this.userUpdate});
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [id, userUpdate];
+}

@@ -12,18 +12,23 @@ import 'package:customer/repository/auth_repository.dart';
 import 'package:customer/repository/cart_repository.dart';
 import 'package:customer/repository/category_repositor.dart';
 import 'package:customer/repository/product_repository.dart';
+import 'package:customer/service/google_signin.dart';
+import 'package:customer/test.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
-void main(List<String> args) {
+Future<void> main(List<String> args) async {
   WidgetsFlutterBinding.ensureInitialized();
-
   runApp(ScreenUtilInit(
       child: MultiBlocProvider(providers: [
     BlocProvider(
       create: (context) => AuthBloc(
-          AuthenticationRepository(AuthenticationRemote(DioClient.instance))),
+        AuthenticationRepository(AuthenticationRemote(DioClient.instance))
+      
+      )..add(CheckLoginEvent()),
     ),
     BlocProvider(
         create: (context) =>
@@ -45,6 +50,7 @@ class StoreApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       home: Nav(),
+    
       debugShowCheckedModeBanner: false,
     );
   }

@@ -1,0 +1,2 @@
+D:/hoc_flutter/customer/android/app/.cxx/Debug/5y5c224u/x86_64/CMakeFiles/edit_cache.dir
+D:/hoc_flutter/customer/android/app/.cxx/Debug/5y5c224u/x86_64/CMakeFiles/rebuild_cache.dir

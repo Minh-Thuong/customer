@@ -77,7 +77,8 @@ class _CartScreenState extends State<CartScreen> {
           }
 
           if (state is CartFailure) {
-            return Center(child: Text("Lỗi: ${state.error}"));
+            print("Lỗi: ${state.error}");
+            return Center(child: Text("Giỏ hàng trống"));
           }
 
           if (state is CartLoaded) {

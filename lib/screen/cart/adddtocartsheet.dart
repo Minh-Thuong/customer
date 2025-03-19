@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:customer/bloc/auth/auth_bloc.dart';
 import 'package:customer/bloc/cart/bloc/cart_bloc.dart';
@@ -106,7 +105,7 @@ class _AddToCartSheetState extends State<AddToCartSheet> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "₫//${widget.price.toStringAsFixed(0)}",
+                      "${widget.price.toStringAsFixed(0)}đ",
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -141,7 +140,7 @@ class _AddToCartSheetState extends State<AddToCartSheet> {
                   },
                 ),
                 Text(
-                  "",
+                  quantity.toString(),
                   style: const TextStyle(
                       fontSize: 18, fontWeight: FontWeight.bold),
                 ),

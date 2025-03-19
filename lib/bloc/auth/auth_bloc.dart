@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:customer/model/update_infor_user.dart';
 import 'package:customer/model/user.dart';
 import 'package:customer/repository/auth_repository.dart';
 import 'package:customer/util/token_manager.dart';
 import 'package:equatable/equatable.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,11 +15,57 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final IAuthenticationRepository _authenticationRepository;
+  // Khởi tạo GoogleSignIn với scope cần thiết
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+    scopes: [
+      'email',
+      'profile',
+    ], // Scope để lấy email, bạn có thể thêm scope khác nếu cần
+  );
+
   AuthBloc(this._authenticationRepository) : super(AuthInitial()) {
     on<AuthLoginRequest>(_onAuthLoginRequest);
     on<CheckLoginEvent>(_onCheckLoginEvent);
     on<AppStarted>(_onAppStarted); // Thêm sự kiện mới
     on<GetUserEvent>(_onGetMyInfor);
+    on<LogoutEvent>(_onLogoutEvent);
+    on<AuthGoogleRequest>(_onAuthByGoogle);
+    on<UpdateUserEvent>(_onUpdateUser);
+    on<AuthSignupRequest>(_onAuthSignupRequest);
+  }
+
+  Future<void> _onAuthSignupRequest(
+      AuthSignupRequest event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      final result = await _authenticationRepository.signup(
+          event.name, event.email, event.phone, event.address, event.password);
+
+      emit(AuthSignUp(user: result));
+    } catch (e) {
+      emit(AuthFailure(message: e.toString()));
+    }
+  }
+
+  Future<void> _onUpdateUser(
+      UpdateUserEvent event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      final user = await _authenticationRepository.updateInfor(
+          event.id, event.userUpdate);
+      emit(UpdateUserSuccess(user));
+      emit(GetUser(user));
+    } catch (e) {
+      emit(AuthError(message: e.toString()));
+    }
+  }
+
+  Future<void> _onLogoutEvent(
+      LogoutEvent event, Emitter<AuthState> emit) async {
+    await _authenticationRepository.logout(event.token);
+    await TokenManager.deleteToken();
+    await _googleSignIn.signOut();
+    emit(AuthUnauthenticated());
   }
 
   Future<void> _onAuthLoginRequest(
@@ -27,8 +75,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final result =
           await _authenticationRepository.login(event.email, event.password);
-      await TokenManager.saveToken(
-          result); // Lưu token sau khi đăng nhập thành công
+      // Lưu token sau khi đăng nhập thành công
+      await TokenManager.saveToken(result);
+
       emit(AuthSuccess(result));
       emit(AuthAuthenticated(userId: result));
     } catch (e) {
@@ -88,13 +137,45 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _onGetMyInfor(GetUserEvent event, Emitter<AuthState> emit) async {
+  Future<void> _onGetMyInfor(
+      GetUserEvent event, Emitter<AuthState> emit) async {
     emit(AuthLoading());
     try {
       final user = await _authenticationRepository.getUser();
-      emit(GetUser( user));
+      emit(GetUser(user));
+      // emit(UpdateUserSuccess(user));
     } catch (e) {
       emit(AuthError(message: e.toString()));
+    }
+  }
+
+  Future<void> _onAuthByGoogle(
+      AuthGoogleRequest event, Emitter<AuthState> emit) async {
+    emit(AuthLoading());
+    try {
+      // Đăng nhập với Google
+      final googleUser = await _googleSignIn.signIn();
+      if (googleUser == null) {
+        emit(AuthFailure(message: 'Google Sign-In cancelled'));
+        return;
+      }
+      print(
+          "email: ${googleUser.email} name: ${googleUser.displayName} image: ${googleUser.photoUrl}");
+      // Gửi ID token đến API
+      final jwtToken = await _authenticationRepository.loginbygoogle(
+        googleUser.email,
+        googleUser.displayName!,
+        googleUser.photoUrl ?? '',
+      );
+
+      // Thành công, chuyển sang trạng thái AuthSuccess
+      // Lưu token sau khi đăng nhập thành công
+      await TokenManager.saveToken(jwtToken);
+
+      emit(AuthSuccess(jwtToken));
+      emit(AuthAuthenticated(userId: jwtToken));
+    } catch (e) {
+      emit(AuthFailure(message: e.toString()));
     }
   }
 }

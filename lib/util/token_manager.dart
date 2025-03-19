@@ -2,7 +2,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenManager {
-  static final String _tokenKey = 'token';
+  static final String _tokenKey = 'auth_token';
 
   // luu token vào shared preferences
   static Future<void> saveToken(String token) async {

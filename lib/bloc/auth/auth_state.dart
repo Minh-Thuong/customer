@@ -31,28 +31,43 @@ class AuthFailure extends AuthState {
 class AuthLogout extends AuthState {}
 
 class AuthSignUp extends AuthState {
-  final String result;
-  const AuthSignUp({required this.result});
+  final User user;
+  const AuthSignUp({required this.user});
 
   @override
   // TODO: implement props
-  List<Object> get props => [result];
+  List<Object> get props => [user];
 }
 
 class AuthAuthenticated extends AuthState {
   final String userId; // Giả sử có thông tin userId
-  AuthAuthenticated({required this.userId});
+  const AuthAuthenticated({required this.userId});
 }
-class AuthUnauthenticated extends AuthState {}
+
+class AuthUnauthenticated extends AuthState {
+  final String? message;
+  const AuthUnauthenticated({this.message});
+}
+
 class AuthError extends AuthState {
   final String message;
-  AuthError({required this.message});
+  const AuthError({required this.message});
 }
 
 class GetUser extends AuthState {
   final User user;
 
-  GetUser(this.user);
+  const GetUser(this.user);
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [user];
+}
+
+class UpdateUserSuccess extends AuthState {
+  final User user;
+
+  const UpdateUserSuccess(this.user);
 
   @override
   // TODO: implement props

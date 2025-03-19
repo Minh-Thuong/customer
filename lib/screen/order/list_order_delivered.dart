@@ -61,7 +61,7 @@ class _ListOrderPendingState extends State<ListOrderDelivered> {
         backgroundColor: Colors.white,
         elevation: 0.5,
         title: const Text(
-          "Đơn hàng đã hủy",
+          "Đơn hàng đã giao",
           style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,

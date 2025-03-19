@@ -27,7 +27,7 @@ class ProductRemote implements ProductDatasource {
       }
       throw Exception("Không thể tải sản phẩm");
     } on DioException catch (e) {
-      throw Exception(e.response?.data['message'] ?? "Lỗi kết nối API");
+      throw Exception(e.response?.data['message'] ?? "Lỗi kết nối API $e");
     } catch (e) {
       throw Exception("Lỗi không xác định$e");
     }

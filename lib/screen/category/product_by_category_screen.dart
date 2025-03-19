@@ -7,15 +7,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ProductByCategoryScreen extends StatelessWidget {
+class ProductByCategoryScreen extends StatefulWidget {
   final String categoryID;
   const ProductByCategoryScreen({super.key, required this.categoryID});
 
   @override
-  Widget build(BuildContext context) {
+  State<ProductByCategoryScreen> createState() {
+    return _ProductByCategoryScreenState();
+  }
+}
+
+class _ProductByCategoryScreenState extends State<ProductByCategoryScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     context
         .read<ProductBloc>()
-        .add(GetProductsByCategoryEvent(categoryID, 0, 10));
+        .add(GetProductsByCategoryEvent(widget.categoryID, 0, 10));
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
@@ -37,12 +50,17 @@ class ProductByCategoryScreen extends StatelessWidget {
               onRefresh: () async {
                 context
                     .read<ProductBloc>()
-                    .add(GetProductsByCategoryEvent(categoryID, 0, 10));
+                    .add(GetProductsByCategoryEvent(widget.categoryID, 0, 10));
               },
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    buildProductGrid(context, state.products),
+                    buildProductGrid(
+                        context,
+                        state.products,
+                        () => context.read<ProductBloc>().add(
+                            GetProductsByCategoryEvent(
+                                widget.categoryID, 0, 10))),
                   ],
                 ),
               ),

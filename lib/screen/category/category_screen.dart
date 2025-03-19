@@ -68,7 +68,7 @@ class CategoryScreen extends StatelessWidget {
           String optimizedUrl = "${category.profileImage}?w=150&h=150&c=fill";
           return InkWell(
             onTap: () {
-              // Điều hướng tới màn hình chi tiết sản phẩm
+              // Điều hướng tới màn hình sản phẩm theo danh mục
               Navigator.push(context, MaterialPageRoute(
                 builder: (context) {
                   return ProductByCategoryScreen(categoryID: category.id);

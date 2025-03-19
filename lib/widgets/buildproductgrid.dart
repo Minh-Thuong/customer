@@ -1,13 +1,11 @@
 // Widget hiển thị lưới sản phẩm
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:customer/bloc/product/product_bloc.dart';
 import 'package:customer/model/product.dart';
 import 'package:customer/screen/product/product_detail.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-Widget buildProductGrid(BuildContext context, List<Product> products) {
+Widget buildProductGrid(BuildContext context, List<Product> products, VoidCallback? onBack) {
   return GridView.builder(
     cacheExtent: 3000,
     shrinkWrap: true,
@@ -27,7 +25,7 @@ Widget buildProductGrid(BuildContext context, List<Product> products) {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ProductDetail(productId: product.id!)));
+                  builder: (context) => ProductDetail(productId: product.id!, onBack: onBack,)));
         },
         child: Card(
           elevation: 8,

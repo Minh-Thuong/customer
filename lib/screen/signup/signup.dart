@@ -95,19 +95,27 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(height: 16),
               BlocConsumer<AuthBloc, AuthState>(
                 listener: (context, state) {
-                  if (state is AuthSuccess) {
-                    Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(
-                        builder: (context) => const LoginScreen(),
-                      ),
-                    );
-                  }
+                  // if (state is AuthSuccess) {
+                  //   Navigator.of(context).pushReplacement(
+                  //     MaterialPageRoute(
+                  //       builder: (context) => const LoginScreen(),
+                  //     ),
+                  //   );
+                  // }
                   if (state is AuthFailure) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(state.message),
+                        content: Text("Đăng ký thất bại"),
                       ),
                     );
+                  }
+                  if (state is AuthSignUp) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Đăng ký thành công"),
+                      ),
+                    );
+                    Navigator.of(context).pop();
                   }
                 },
                 builder: (context, state) {

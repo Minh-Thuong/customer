@@ -10,6 +10,7 @@ void AuthAction(BuildContext context, Map<String, dynamic> data, bool islogin) {
     authBloc.add(
         AuthLoginRequest(email: data['email']!, password: data['password']!));
   } else {
+    
     authBloc.add(AuthSignupRequest(
         name: data['name']!,
         email: data['email']!,

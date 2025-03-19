@@ -1,4 +1,5 @@
 import 'package:customer/bloc/auth/auth_bloc.dart';
+import 'package:customer/nav.dart';
 import 'package:customer/screen/home/homescreen.dart';
 import 'package:customer/screen/signup/signup.dart';
 import 'package:customer/util/auth_action.dart';
@@ -6,6 +7,7 @@ import 'package:customer/util/token_manager.dart';
 import 'package:customer/widgets/buildloginorsignup_btn.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -80,8 +82,28 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  _buildSocialButton("Đăng nhập với Google",
-                      "https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA"),
+                  BlocListener<AuthBloc, AuthState>(
+                    listener: (context, state) async {
+                      print(state);
+
+                      if (state is AuthFailure) {
+                        print(state.message);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text("Đăng nhập thất bại"),
+                            backgroundColor: Colors.red,
+                            duration: Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                      if (state is AuthSuccess) {
+                        await TokenManager.saveToken(state.token);
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: _buildSocialButton("Đăng nhập với Google",
+                        "https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA"),
+                  ),
                 ],
               ),
               const SizedBox(height: 24),
@@ -97,14 +119,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       final email = _emailController.text;
                       final password = _passwordController.text;
 
-                      // Gọi hàm login từ bloc
-                      AuthAction(
-                          context,
-                          {
-                            'email': email,
-                            'password': password,
-                          },
-                          true); // true: đăng nhập, false: đăng ký
+                      // Dispatch the AuthLoginRequest event to the AuthBloc
+                      context.read<AuthBloc>().add(
+                          AuthLoginRequest(email: email, password: password));
                     },
                   );
                 },
@@ -119,14 +136,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     );
                   }
                   if (state is AuthSuccess) {
-                    state.token;
                     await TokenManager.saveToken(state.token);
-                    // Navigator.of(context).pushReplacement(
-                    //   MaterialPageRoute(
-                    //     builder: (_) => const Homescreen(),
-                    //   ),
-                    // );
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => Nav()));
                   }
                 },
               ),
@@ -207,7 +220,9 @@ class _LoginScreenState extends State<LoginScreen> {
         side: const BorderSide(color: Colors.grey),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       ),
-      onPressed: () {},
+      onPressed: () {
+        context.read<AuthBloc>().add(AuthGoogleRequest());
+      },
       icon: Image.network(imagePath, height: 24),
       label: Text(text, style: const TextStyle(color: Colors.black)),
     );

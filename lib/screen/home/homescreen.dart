@@ -103,7 +103,9 @@ class _HomescreenState extends State<Homescreen> {
                 child: Column(
                   children: [
                     _buildBanner(),
-                    buildProductGrid(context, state.products),
+                    buildProductGrid(context, state.products, () {
+                      context.read<ProductBloc>().add(GetProductsEvent());
+                    }),
                   ],
                 ),
               ),

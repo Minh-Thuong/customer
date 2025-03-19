@@ -8,7 +8,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProductDetail extends StatelessWidget {
   final String productId;
-  const ProductDetail({super.key, required this.productId});
+  final VoidCallback? onBack;
+  const ProductDetail({super.key, required this.productId, this.onBack});
 
   void _showAddToCartModal(BuildContext context, Product product) {
     showModalBottomSheet(
@@ -34,8 +35,11 @@ class ProductDetail extends StatelessWidget {
     context.read<ProductBloc>().add(GetProductByIdEvent(productId));
     return WillPopScope(
       onWillPop: () async {
+        if (onBack != null) {
+          onBack!();
+        }
         Navigator.pop(context);
-        context.read<ProductBloc>().add(GetProductsEvent());
+        // context.read<ProductBloc>().add(GetProductsEvent());
         return true;
       },
       child: Scaffold(

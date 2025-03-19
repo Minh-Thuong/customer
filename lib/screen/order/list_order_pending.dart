@@ -68,6 +68,7 @@ class _ListOrderPendingState extends State<ListOrderPending> {
       ),
       body: BlocBuilder<CartBloc, CartState>(
         builder: (context, state) {
+          print("Current state: $state");
           if (state is OrderLoading) {
             return const Center(child: CircularProgressIndicator());
           }
