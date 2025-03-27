@@ -153,7 +153,7 @@ class _ChatPagesState extends State<ChatPages> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Chatbot Gemini'),
+        title: const Text('Trợ lý ảo'),
         centerTitle: true,
         backgroundColor: Colors.green.shade200,
         actions: [
