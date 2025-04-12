@@ -41,7 +41,7 @@ Click the image above to watch the full demo on YouTube.
 To run this project locally:
 
 ```bash
-git clone https://github.com/your-username/customer.git
+git clone https://github.com/Minh-Thuong/customer.git
 cd customer
 flutter pub get
 flutter run
