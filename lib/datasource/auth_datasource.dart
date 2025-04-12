@@ -24,7 +24,7 @@ class AuthenticationRemote extends IAuthenticationDatasource {
   Future<String> login(String email, String password) async {
     try {
       final response = await _dio.post('/api/users/auth/login',
-          data: {'email': email, 'password': password,     "role" : "USER"});
+          data: {'email': email, 'password': password, "role": "USER"});
       if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
         final result = response.data['result'];
 

@@ -45,19 +45,19 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(height: 50),
               // Logo
               Image.network(
-                "https://res.cloudinary.com/dnwp3ccn7/image/upload/v1739813369/b3r0xolfjdjilchpnvme.png",
+                "https://res.cloudinary.com/dnwp3ccn7/image/upload/v1744094734/e7z5altam2rsmawnrubx.png",
                 height: 150,
               ),
               const SizedBox(height: 16),
               // Tiêu đề
-              const Text(
-                "Women's Secret Beauty",
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green,
-                ),
-              ),
+              // const Text(
+              //   "Women's Secret Beauty",
+              //   style: TextStyle(
+              //     fontSize: 28,
+              //     fontWeight: FontWeight.bold,
+              //     color: Colors.green,
+              //   ),
+              // ),
               const SizedBox(height: 8),
               const Text(
                 "Đăng nhập tài khoản",

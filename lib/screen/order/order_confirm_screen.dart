@@ -202,6 +202,7 @@ class _OrderConfirmationScreenState extends State<OrderConfirmationScreen> {
                       style: const TextStyle(
                           fontSize: 14, fontWeight: FontWeight.bold)),
                   Text(subtitle,
+                      maxLines: 2,
                       style: const TextStyle(fontSize: 12, color: Colors.grey)),
                   const SizedBox(height: 5),
                   Text("$price đ",

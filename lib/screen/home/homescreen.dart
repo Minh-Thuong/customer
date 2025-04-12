@@ -126,7 +126,7 @@ class _HomescreenState extends State<Homescreen> {
         width: double.infinity,
         child: CachedNetworkImage(
           imageUrl:
-              "https://cdn-media.sforum.vn/storage/app/media/anh-dep-110.jpg",
+              "https://res.cloudinary.com/dnwp3ccn7/image/upload/v1744105336/b9p6syxviarrttmhrqnr.jpg",
           fit: BoxFit.cover,
           placeholder: (context, url) => Container(
             color: Colors.grey[300],
