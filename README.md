@@ -1,19 +1,47 @@
-# customer
 
-A new Flutter project.
+# 🛍️ Customer App – Cosmetic Store
 
-## Getting Started
+A complete Flutter mobile application for customers to browse, search, and purchase cosmetics online.  
+Connected with a Spring Boot backend and designed with clean architecture principles.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## ✨ Features
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- 🔍 Search products by keyword or category
+- 🛒 Add to cart and update quantities
+- 📦 Place and cancel orders
+- 🚚 Track order status
+- 👤 Manage personal profile
+- 🔐 Google Sign-In integration
+- 🤖 AI Chatbot support (Gemini API)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-"# customer" 
+---
+
+## 🧰 Technologies Used
+
+- **Flutter** with Bloc (state management)
+- **Spring Boot** for backend APIs
+- **MySQL** for database
+- **Cloudinary** for image storage
+- **Gemini API** for chatbot support
+
+---
+
 ## 📽️ Demo
-[![Watch the demo](https://img.youtube.com/vi/abc123XYZ/hqdefault.jpg)](https://www.youtube.com/watch?v=XNL58pFRQQo)
+
+[![Watch the demo](https://img.youtube.com/vi/XNL58pFRQQo/hqdefault.jpg)](https://www.youtube.com/watch?v=XNL58pFRQQo)
+
+Click the image above to watch the full demo on YouTube.
+
+---
+
+## 🚀 Getting Started
+
+To run this project locally:
+
+```bash
+git clone https://github.com/your-username/customer.git
+cd customer
+flutter pub get
+flutter run
